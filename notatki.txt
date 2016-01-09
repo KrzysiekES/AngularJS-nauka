@@ -87,4 +87,43 @@ Interpolacja - przykład
 {{ "AngularJS jest the best" }} 
 {{ jakasFunkcja() }}
 
+Rozdział2 - $scope - niepozorny obiekt
+
+$scope - Jego podstawowe zadania to: 
+
+-transportowanie modelu pomiędzy widokiem a kontrolerem.
+-nasłuchiwanie zdarzeń badź zmian zachodzących w modelu.
+-propagacja zmian w modelu.
+
+$rootScope jest rodzicem wszystkich obiektów $scope i znajduje się najwyżej w hierarchii. Nie zaleca się przypisywania mu zbyt wielu atrybutów, gdyż jest on czymś na wzór obiektu globalnego.
+
+Przykład1 
+
+<!DOCTYPE html>
+<html ng-app="app" lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Kontroler - przypisywanie atrybutów</title>
+</head>
+<body>
+  <div ng-controller="dateCtrl">
+    Data: {{ original() | date }} <!-- Interpolacja wywołujemy original w formacie samej daty-->
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module('app', []); //zmienna przechowywująca odwołanie do modułu
+    
+    app.run(function ($rootScope) {
+      $rootScope.dateOriginal= new Date(); //deklarujemy w rootScope zmienna dateOriginal zawierająca obiekt Date()
+    });
+    
+    app.controller('dateCtrl' , function ($rootScope, $scope) { //w kontrolerze dateCtrl tworzymy funkcję
+      $scope.original = function () { //Tworzymy scope'a original który jest funkcją wywołująca rootScope'a dateOriginal
+        return $rootScope.dateOriginal;
+      };
+    });
+    
+  </script>
+</body>
+</html>
 

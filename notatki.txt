@@ -1,0 +1,90 @@
+Rozdział 1 - Wstęp
+ng-app - określa jaka część drzewa DOM będzie zarządzana przez AngularJS
+<html>
+  // niezarządzana przez angulara
+  <div ng-app>
+  //zarządzana przez Angulara
+  </div>
+</html>
+
+Przykład 1
+<!DOCTYPE html>
+<html ng-app>
+<head>
+</head>
+<body>
+  <input ng-model="text">
+  <p> {{ text }}</p> <!-- Tekst wpisywany w inpucie będzie sie pojawiał w akapicie-->  
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+</body>
+</html>
+
+Obiekt scope (a dokladnie $scope) jest mostem miedzy widokiem a kontrolerem, "transportującym model w obu kierunkach.
+
+hello.html
+<!DOCTYPE html>
+<html ng-app="app" lang="pl">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <div ng-controller="FirstCtrl"> 
+    <p>Witaj, {{ message.sentence }}</p>
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script src="controller.js"></script>
+</body>
+</html>
+
+controller.js
+angular.module('app',[])
+          .controller('FirstCtrl', ['$scope', function ($scope) {
+            $scope.message = { sentence: 'Świecie !'};    
+          }]);
+
+
+hello2.html
+<!DOCTYPE html>
+<html ng-app lang="pl">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <input type="text" ng-model="message.sentence"> 
+    <p>Witaj, {{ message.sentence }} !</p>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+</body>
+</html>
+
+Angular to framework SPA, czyli: 
+
+1.Logika zostaje przeniesiona z serwera na klienta. Praca łączenia szablonu z danymi odbywa się w przeglądarce, nie na back-endzie.
+
+2.Serwer służy jedynie jako źródło danych dostarczające szablon HTML, CSS oraz Javascript podczas ładowania strony. W razie potrzeby dodatkowe dane z serwera są dosyłane dynamicznie.
+
+3.Strona nie jest przeładowana za każdym razem, odświeżane są tylko wybrane jej elementy.
+
+
+Przypisywanie modelu do obiektu scope: 
+
+function ExampleController($scope){
+  $scope.message { hello: "Witaj, Świecie"};
+
+  var person = [{ name: 'Jan Kowalski', age: 22},
+                { name: 'Tomek Bąk', age: 42}
+                ];
+  $scope.person;
+}
+
+W ten sposób przypisaliśmy message oraz person do obiektu $scope i możemy się do niego 
+odwoływać w dowolnej części widoku zarządzanej przez Angulara i zawierającej dyrektywę
+ng-controller.
+
+Interpolacja - przykład 
+
+{{ message.hello }}
+{{ 3 + 22 }}
+{{ "AngularJS jest the best" }} 
+{{ jakasFunkcja() }}
+
+

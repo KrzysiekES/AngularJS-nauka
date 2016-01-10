@@ -127,3 +127,117 @@ Przykład1
 </body>
 </html>
 
+Przykład2 // dodanie do scope'a innych zmiennych
+
+<!DOCTYPE html>
+<html ng-app="app" lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Kontroler - przypisywanie atrybutów</title>
+</head>
+<body>
+  <div ng-controller="dateCtrl">
+    Data: {{ original() | date }} <!-- Interpolacja wywołujemy original w formacie samej daty-->
+    {{ wiadomosc }} <br>
+    {{ funkcjaA() }}
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module('app', []); //zmienna przechowywująca odwołanie do modułu
+    
+    app.run(function ($rootScope) {
+      $rootScope.dateOriginal= new Date(); //deklarujemy w rootScope zmienna dateOriginal zawierająca obiekt Date()
+    });
+    
+    app.controller('dateCtrl' , function ($rootScope, $scope) { //w kontrolerze dateCtrl tworzymy funkcję
+      $scope.original = function () { //Tworzymy scope'a original który jest funkcją wywołująca rootScope'a dateOriginal
+        return $rootScope.dateOriginal;
+      };
+      
+      $scope.wiadomosc = 'jakas przykładowa wiadomość';
+      $scope.funkcjaA = function() {
+        
+       return $scope.wiadomosc + " <--wiadomosc";
+      };
+    });
+  </script>
+</body>
+</html>
+
+
+Przykład3 - poprawa testu
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Dziedziczenie</title>
+</head>
+<body>
+  <div ng-controller="defaultCtrl">
+   {{ uczen.zdanyTest }}
+    <div ng-controller="inheritianceCtrl">
+      <input type="text" ng-model="uczen.imie" placeholder="imie Ucznia ">
+      <button ng-click="poprawaTestu()">Poprawa testu</button> 
+    </div>
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module("app", [] );
+    
+    app.controller('defaultCtrl', function($scope) {
+      $scope.uczen = { zdanyTest: false };       // ustawiamy zdany test na false
+    });
+    
+    app.controller('inheritanceCtrl', function($scope) {
+      $scope.poprawaTestu = function() { //funkcja poprawia wynik testu na zdany
+       $scope.uczen.zdanyTest = true; //odwolujemy sie do zdanego testu i ustawiamy na zdany
+      }
+    });
+  </script>
+</body>
+</html>
+
+ng-click - po kliknięciu wywołanie funkcji
+ng-repeat - pozwala nam iterować po dowonlej kolekcji obiektów, dodatkowo tworzy osobne elementy szablonu DOM dla każdego z elementów kolekcji.
+
+Przykład4 - ng-repeat
+
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Ng-repeat</title>
+</head>
+<body>
+  <div ng-controller='defaultCtrl'>
+    <ul>
+      <li ng-repeat="oferta in oferty"><!--przypisujemy oferta w scopie oferty-->
+        <p>Nazwa: {{ oferta.nazwa }} a cena: {{ oferta.cena }}</p>]
+        <!--Wywołujemy w pętli elementy z oferty-->
+      </li>
+    </ul>
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    
+    var app = angular.module('app', []); //przypisanie do zmiennej odwołania do modułu
+    
+    app.controller("defaultCtrl", function($scope) {
+      $scope.oferty = [ //do scope'a oferty przypisujemy zmienne
+        { nazwa: 'Krzesło' , cena: 44 },
+        { nazwa: 'Stół' , cena: 56 },
+        { nazwa: 'Tv', cena: 999.99 }
+      ];
+    });
+  </script>
+</body>
+</html>
+
+Dziedziczenie obiektów scope w Angularze odbywa się z użyciem metody new()
+
+  var obiektBazowy = $rootScope;
+  var obiektPochodny = obiektBazowy.new();
+  obiektBazowy.imie = 'Marian';
+  obiektPochodny.nazwisko = 'Kowalski';
+
+W celu zniszczenia danego obiektu scope nalezy zastosować metodę $destroy(), która usuwa wszystkie obiekty pochodne (i ich pochodne) z obiektu bazowego. Od tej chwili dane scope jest gotowy na "odśmiecanie", czyli tzw "garbage collection".

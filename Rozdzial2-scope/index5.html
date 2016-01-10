@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>$watch </title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div ng-controller="defaultCtrl">
+    <div class="well">Liczba {{ number }}</div>
+    <div>
+      <a href="#" class="btn btn-success" ng-click="add()">+</a> <!-- ng-click wywołuje funkcje add() -->
+      <a href="#" class="btn btn-danger" ng-click="dec()">-</a> <!--ng-click wywołuje funkcje dec() -->
+    </div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    app = angular.module("app", []);
+
+    app.controller("defaultCtrl", function($scope){
+      $scope.number = 1;
+      $scope.$watch('number', function() { //obserwuje zmienna number 
+        alert("Uwaga liczba teraz to : " + $scope.number); //jesli sie zmienila to wyskakuje alert
+      });
+      
+      $scope.add = function() {  //dodaje 1 do zmiennej number
+        $scope.number++;
+      };
+      
+      $scope.dec = function() { //odejmuje 1 od zmiennej number
+        $scope.number--;
+      };
+    });
+  </script>
+</body>
+</html>

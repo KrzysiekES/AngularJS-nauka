@@ -87,6 +87,28 @@ Interpolacja - przykład
 {{ "AngularJS jest the best" }} 
 {{ jakasFunkcja() }}
 
+
+Quizz
+1.Co to jest AngularJS ?
+Odp.Framework w JavaScriptcie wykorzystujący HTML.
+2.Kto jest twórcą AngularJS ?
+Odp.
+3.Czym się różni angular.js od angular.min.js
+Odp.
+
+4.Co to jest ng-app ?
+Odp.
+
+5.Co to jest SPA ?
+Odp.
+
+6.Czym się różni wiązanie pojedyncze od podwójnego ?
+Odp.
+
+7.Co to jest MVC ?
+Odp.
+
+
 Rozdział2 - $scope - niepozorny obiekt
 
 $scope - Jego podstawowe zadania to: 
@@ -241,3 +263,132 @@ Dziedziczenie obiektów scope w Angularze odbywa się z użyciem metody new()
   obiektPochodny.nazwisko = 'Kowalski';
 
 W celu zniszczenia danego obiektu scope nalezy zastosować metodę $destroy(), która usuwa wszystkie obiekty pochodne (i ich pochodne) z obiektu bazowego. Od tej chwili dane scope jest gotowy na "odśmiecanie", czyli tzw "garbage collection".
+
+Nasłuchiwanie oraz $watch
+
+po przypisaniu $watch do wybranego elementu AngularJs zaczyna oczekiwac na ewentualne zmiany.
+
+Przykład5. ng-watch
+
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>$watch </title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div ng-controller="defaultCtrl">
+    <div class="well">Liczba {{ number }}</div>
+    <div>
+      <a href="#" class="btn btn-success" ng-click="add()">+</a> <!-- ng-click wywołuje funkcje add() -->
+      <a href="#" class="btn btn-danger" ng-click="dec()">-</a> <!--ng-click wywołuje funkcje dec() -->
+    </div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    app = angular.module("app", []);
+
+    app.controller("defaultCtrl", function($scope){
+      $scope.number = 1;
+      $scope.$watch('number', function() { //obserwuje zmienna number 
+        alert("Uwaga liczba teraz to : " + $scope.number); //jesli sie zmienila to wyskakuje alert
+      });
+      
+      $scope.add = function() {  //dodaje 1 do zmiennej number
+        $scope.number++;
+      };
+      
+      $scope.dec = function() { //odejmuje 1 od zmiennej number
+        $scope.number--;
+      };
+    });
+  </script>
+</body>
+</html>
+
+$digest - rozpoczyna się jako efekt wywołania $scope.digest(). Jest to cykl ewaluacji kolejno wszystkich obiektów nasłuchujących występujących w danym scope oraz jego potomkach.
+
+Przykład 6 pt1.
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>$watch - AngularJS</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div ng-controller="defaultCtrl">
+    <div class="well">Wiadomość: {{ msg }}</div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app= angular.module("app", [] );
+    
+    app.controller("defaultCtrl", function($scope) {
+      $scope.go = function() {
+        setTimeout(function() {
+          $scope.msg = "Wow, jestem opóźnioną informacją!";
+          console.log('message: ' + $scope.msg);
+        },2000);
+      };
+      $scope.go();
+    });
+
+  </script>
+</body>
+</html>
+
+Wynik nie do konca zgodny z naszymi oczekiwaniami. Naszym celem było uaktualnienie widoku {{msg}} po dwóch sekundach. Tak się jednak nie stało, mimo że teoretycznie program zadziałał i po 2 sek w logu otrzymaliśmy oczekiwant tekst.Dlaczego widok nie został uaktualniony ? Jak rozwiązać ten problem ? Do tego posłuży nam $apply().
+
+Przykład6 pt2
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>$watch - AngularJS</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div ng-controller="defaultCtrl">
+    <div class="well">Wiadomość: {{ msg }}</div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app= angular.module("app", [] );
+    
+    app.controller("defaultCtrl", function($scope) {
+      $scope.go = function() {
+        setTimeout(function() {
+          $scope.msg = "Wow, jestem opóźnioną informacją!";
+          console.log('message: ' + $scope.msg);
+          $scope.$apply();
+        },2000);
+      };
+      $scope.go();
+    });
+    /*Wszystko zadziałało tak jak chcialiśmy, msg zostało podmienione :)*/
+  </script>
+</body>
+</html>
+
+Quizz
+1.Co to jest $scope ?
+
+2.Czym się różni $scope od $rootScope ?
+
+3.Co to jest drzewo DOM ?
+
+4.Jak stworzyć izolowany scope ?
+
+5.Co to są obiekty nasłuchujące ?
+
+6.Jak działa cykl $digest ?
+
+7.W jakich sytuacjach nazleży korzystać z usługi $apply?
+

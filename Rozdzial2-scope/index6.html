@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>$watch - AngularJS</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div ng-controller="defaultCtrl">
+    <div class="well">Wiadomość: {{ msg }}</div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app= angular.module("app", [] );
+    
+    app.controller("defaultCtrl", function($scope) {
+      $scope.go = function() {
+        setTimeout(function() {
+          $scope.msg = "Wow, jestem opóźnioną informacją!";
+          console.log('message: ' + $scope.msg);
+        },2000);
+      };
+      $scope.go();
+    });
+      /*
+Wynik nie do konca zgodny z naszymi oczekiwaniami. Naszym celem było uaktualnienie widoku {{msg}} po dwóch sekundach. Tak się jednak nie stało, mimo że teoretycznie program zadziałał i po 2 sek w logu otrzymaliśmy oczekiwant tekst.Dlaczego widok nie został uaktualniony ? Jak rozwiązać ten problem ? Do tego posłuży nam $apply().
+*/
+  </script>
+</body>
+</html>
+

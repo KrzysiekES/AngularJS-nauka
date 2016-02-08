@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>  
+  <title>Ćwiczenia</title>
+  <meta charset="utf-8">
+</head>
+<body>
+  $scope ,$rootScope, Dziedziczenie, $digest, $apply, $watch
+  
+  <div ng-controller="firstCtrl">
+    <h3>Moje imię: {{ imie }} </h3>
+    <h3>Moje nazwisko to : {{nazwisko}}</h3>
+    <button ng-click="sprawdzNazwisko()">Sprawdź</button>
+    <ul>
+      <li ng-repeat="osoba in osoby">{{ osoba.imie }}</li>
+    </ul>
+  </div>
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module("app", []);
+    app.controller("firstCtrl", function($scope) {
+      $scope.imie = "Krzysiek";
+      
+      $scope.sprawdzNazwisko = function() {
+        setTimeout( function() {
+          $scope.nazwisko = "Stelmach";
+          $scope.$apply(); //dzieki temu wyświetli sie po 2 sek 
+        },2000);
+       
+      }
+      $scope.osoby = [
+        { imie: "Mark"},
+        { imie: "TOM"},
+        { imie: "Piotr"},
+        { imie: "Adam"},
+      ];
+      
+    });
+  </script> 
+</body>
+</html>

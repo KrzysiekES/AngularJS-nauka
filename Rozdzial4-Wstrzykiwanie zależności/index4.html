@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Providery</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>Providery</h1>
+    
+    <p>Provider to najbardziej elastyczna metoda tworzenia fabryk </p>
+  <div ng-controller='defaultCTRL'>
+    
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module("app",[]);
+    //wstrzykiwanie do providera Value
+    
+    app.value('stringValue', 'AngularJS');
+    
+    app.provider('oneProvider', function(){
+      var provider = {};
+      provider.$get = function(stringValue){
+        var service = {};
+        service.doService = function() {
+          console.log('Log z providera + value' + stringValue );
+        }
+        return service;
+      };
+      console.log(provider);
+      return provider;
+    });
+
+    app.controller('defaultCTRL', function($scope, oneProvider){
+      oneProvider.doService();
+    });
+  </script>
+</body>
+</html>
+

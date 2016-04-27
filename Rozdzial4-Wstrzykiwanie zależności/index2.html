@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>DI</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>Factory</h1>
+    
+    <p>Factory - jest to funkcja tworząca obiekt Value. Jeśli serwis, controller itd. potrzebują obiektu wstrzykiwanego z fabryki, tworzy go ona na żądanie. Raz stworzony obiekt jest dostępny dla wszystkich serwisów, które potrzebują go wstrzyknąc. Factory różni się od Value tym, że może użyc funkcji do stworzenia obiektu, która zwraca. Możesz wstrzyknąc Value do Factory, gdy tworzony jest obiekt, ale nie można zrobic tego samego w przypadku Value. </p>
+    
+  <div ng-controller="defaultCtrl">
+    <pre>
+      $scope.oneFactory = {{ oneFactory }}
+    </pre>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    var app = angular.module("app",[]);
+    
+    //Przypisanie do Value
+    
+    app.value("stringValue", "AngularJS");
+  
+    //Stworzenie factory i przypisanie Value
+    
+    app.factory("oneFactory", ['stringValue', function(stringValue){
+       return "Wartosc z fabryki to : " + stringValue;
+    }]);
+    
+    app.controller("defaultCtrl", ['$scope','oneFactory', function($scope, oneFactory){
+      
+      //Dostęp na poziomie kontrolera
+      console.log(oneFactory);
+      
+      //przypisanie do scope zeby uzyskac widocznosc w widoku
+      $scope.oneFactory = oneFactory;
+      
+    }]);
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Właściwości Modułu</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>Właściwości Modułu</h1>
+  
+  <div ng-controller="defaultCtrl">
+    <pre>
+      viewTest = {{ stringValue}}
+      $scope.newValue2 = {{ stringValue2}}
+    </pre>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js" ></script>
+  <script>
+    
+    var app2 = angular.module('app2', []);
+    app2.value('stringValue2', 'Moduł 2');
+    
+    var app = angular.module("app",['app2']); //przypisanie zawartosci modulu 2 do 1
+    app.value('stringValue', 'Moduł 1');
+
+    app.controller('defaultCtrl', function($scope, stringValue, stringValue2){
+      $scope.stringValue = stringValue;
+      $scope.stringValue2 = stringValue2;
+    });
+    
+
+  </script>
+</body>
+</html>
+
